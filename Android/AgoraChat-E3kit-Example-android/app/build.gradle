@@ -71,6 +71,6 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'com.virgilsecurity:ethree:2.0.10'
-    implementation 'io.agora.rtc:chat-sdk:1.0.2'
+    implementation 'io.agora.rtc:chat-sdk:1.0.3'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 }
