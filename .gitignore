@@ -1,0 +1,6 @@
+
+.DS_Store
+*.xcworkspacedata
+iOS/AgoraChatEThreeExample/AgoraChatEThreeExample/AgoraChatEThreeExample.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+*.xcuserstate
+*.plist
