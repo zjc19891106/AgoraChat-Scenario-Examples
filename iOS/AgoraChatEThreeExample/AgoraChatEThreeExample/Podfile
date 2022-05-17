@@ -7,6 +7,6 @@ target 'AgoraChatEThreeExample' do
 
   pod 'VirgilE3Kit', '2.2.0'
   pod 'AgoraChat'
-  pod 'ZSwiftBaseLib',:git =>"https://github.com/zjc19891106/ZSwiftBaseLib"
+  pod 'ZSwiftBaseLib','0.1.4'
   pod 'ProgressHUD'
 end
