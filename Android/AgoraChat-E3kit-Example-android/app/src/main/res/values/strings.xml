@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">AgoraChat E3 Example</string>
+    <string name="login_none">User not login</string>
+    <string name="login_user_info">current user is:%1$s</string>
+    <string name="login">Register than login</string>
+    <string name="logout">LogOut</string>
+    <string name="chats">E3EncryptChats</string>
+
+    <string name="sign_agora_id">AgoraID</string>
+    <string name="sign_nickname">Nickname</string>
+    <string name="sign_login">Log In</string>
+    <string name="sign_error_illegal_character">Latin letters and numbers only.</string>
+    <string name="sign_error_not_id">Please enter an AgoraID.</string>
+    <string name="sign_error_not_nickname">Please enter a nickname.</string>
+
+    <string name="error_network_error">Network unavailable</string>
+    <string name="error_not_login">You haven\'t logged in</string>
+    <string name="error_parse_error">Parsing error</string>
+    <string name="error_err_unknown">Network error, please try again later.</string>
+    <string name="err_image_android_min_version">Image upload only supported in v4.4 and above</string>
+    <string name="err_file_not_exist">File does not exist</string>
+    <string name="error_add_self">You can\'t add yourself</string>
+    <string name="error_already_friend">This user is already your friend</string>
+    <string name="error_already_friend_but_in_black">This user is already your friend (on blocklist). Please remove this user from the blocklist.</string>
+    <string name="error_delete_not_exist_msg">Failed to delete message or this message does not exist</string>
+    <string name="error_group_no_members">No group members</string>
+    <string name="error_user_already_exist">Username already exists, please enter another one.</string>
+    <string name="error_delete_conversation">Failed to delete conversation or this conversation does not exist</string>
+    <string name="error_message_external_logic_blocked">Message blocked by content moderation</string>
+
+    <string name="network_disconnect">Network error</string>
+    <string name="say_hi">say hi...</string>
+    <string name="sendto">sendTo</string>
+</resources>
