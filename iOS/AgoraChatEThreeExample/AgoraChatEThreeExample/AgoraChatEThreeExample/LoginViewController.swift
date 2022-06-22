@@ -64,7 +64,7 @@ extension LoginViewController {
                 self.agoraChatLogin(loginName: loginName, token: token)
             }
         } else {
-            if let code = dic["code"] as? String,code == "RES_USER_ALREADY_EXISTS" {
+            if let reponsecode = dic["code"] as? String,reponsecode == "RES_USER_ALREADY_EXISTS" {
                 guard let userName = self.userNameField.text,let passWord = self.passWordField.text,!userName.isEmpty,!passWord.isEmpty else { return }
                 AgoraChatRequest.shared.loginToAppSever(userName: userName.lowercased(), passWord: passWord) { dic, code in
                     if let token = dic["accessToken"] as? String,let loginName = dic["chatUserName"] as? String,token.count > 0 {

@@ -31,7 +31,7 @@ final class AgoraChatViewController: UIViewController,UITableViewDelegate,UITabl
     convenience init(_ conversationId: String,_ group: Group) {
         self.init()
         self.conversation = AgoraChatClient.shared().chatManager.getConversationWithConvId(conversationId)
-        let messages = self.conversation?.loadMessagesStart(fromId: "", count: 50, searchDirection: EMMessageSearchDirection.init(rawValue: 0)) ?? []
+        let messages = self.conversation?.loadMessagesStart(fromId: "", count: 50, searchDirection: .up) ?? []
         self.group = group
         AgoraChatCell.group = self.group
         self.loadMessagerCard(messages)
@@ -106,8 +106,8 @@ extension AgoraChatViewController {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let message: AgoraChatMessage = self.messages[safe: indexPath.row]!
-        switch message.body.type.rawValue {
-        case 2,3,5,6:
+        switch message.body.type {
+        case .image,.video,.voice,.file:
             AgoraChatClient.shared().chatManager.downloadMessageAttachment(message, progress: nil) { msg, error in
                 if error == nil,let body = message.body as? AgoraChatFileMessageBody {
                     self.quickLookFile(filePath: body.localPath)
@@ -158,7 +158,8 @@ extension AgoraChatViewController {
     }
     
     private func sendTextMessage(_ text: String) {
-        let message = AgoraChatMessage(conversationID: self.title, from: AgoraChatClient.shared().currentUsername, to: self.title, body: AgoraChatTextMessageBody(text: text), ext: [:])
+        let to = self.conversation?.conversationId ?? ""
+        let message = AgoraChatMessage(conversationID: to, from: AgoraChatClient.shared().currentUsername!, to: to, body: AgoraChatTextMessageBody(text: text), ext: [:])
         AgoraChatClient.shared().chatManager.send(message, progress: nil) { sendMessage, error in
             if let msg = sendMessage,error == nil {
                 self.loadMessagerCard([msg])
@@ -174,9 +175,8 @@ extension AgoraChatViewController {
     //MARK: - AgoraChatClientDelegate
     
     //MARK: - AgoraChatManagerDelegate
-    func messagesDidReceive(_ aMessages: [Any]!) {
-        guard let messages = aMessages as? [AgoraChatMessage] else { return }
-        self.loadMessagerCard(messages)
+    func messagesDidReceive(_ aMessages: [AgoraChatMessage]) {
+        self.loadMessagerCard(aMessages)
         DispatchQueue.main.async {
             self.messagesList.reloadData()
             self.messagesList.scrollToRow(at: IndexPath(row: self.messages.count - 1, section: 0), at: .bottom, animated: true)
