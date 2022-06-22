@@ -53,8 +53,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// register agoraChatSDK
     private func agoraChatInitlize() {
         let options = AgoraChatOptions(appkey: self.appKey)
-        options?.enableConsoleLog = true
-        options?.isAutoLogin = true
+        options.enableConsoleLog = true
+        options.isAutoLogin = true
         AgoraChatClient.shared().initializeSDK(with: options)
     }
     

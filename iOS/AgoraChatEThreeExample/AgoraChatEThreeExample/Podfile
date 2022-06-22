@@ -6,7 +6,7 @@ target 'AgoraChatEThreeExample' do
   use_frameworks!
 
   pod 'VirgilE3Kit', '2.2.0'
-  pod 'AgoraChat'
+  pod 'Agora_Chat_iOS','1.0.6'
   pod 'ZSwiftBaseLib','0.1.4'
   pod 'ProgressHUD'
 end

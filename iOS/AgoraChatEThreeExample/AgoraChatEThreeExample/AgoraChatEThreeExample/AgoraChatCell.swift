@@ -47,10 +47,10 @@ extension AgoraChatCell {
         self.content.text = Self.contentText(message)
     }
     
-    private static func converType(_ type: UInt32) -> String {
+    private static func converType(_ type: AgoraChatMessageBodyType) -> String {
         var text = "[unknown type]"
         switch type {
-        case 2,3,5,6:
+        case .image,.video,.voice,.file:
             text = "[file]"
         default:
             text = "[unknown type]"
@@ -70,8 +70,8 @@ extension AgoraChatCell {
     /// - Returns: text
     static func contentText(_ message: AgoraChatMessage) -> String {
         var content = "No Message!"
-        if message.body.type.rawValue != 1 {
-            content = self.converType(message.body.type.rawValue)
+        if message.body.type != .text {
+            content = self.converType(message.body.type)
         } else {
             if let body = message.body as? AgoraChatTextMessageBody {
                 do {

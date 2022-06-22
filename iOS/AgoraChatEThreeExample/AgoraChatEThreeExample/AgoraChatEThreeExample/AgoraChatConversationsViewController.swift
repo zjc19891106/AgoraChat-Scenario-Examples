@@ -88,7 +88,7 @@ extension AgoraChatConversationsViewController {
         if self.toChatId.isEmpty {
             return
         }
-        let item: AgoraChatConversation = AgoraChatClient.shared().chatManager.getConversation(self.toChatId, type: AgoraChatConversationType.init(rawValue: 0), createIfNotExist: true)
+        let item: AgoraChatConversation = AgoraChatClient.shared().chatManager.getConversation(self.toChatId, type: .chat, createIfNotExist: true)!
         var cards: FindUsersResult?
         var group: Group?
         do {
