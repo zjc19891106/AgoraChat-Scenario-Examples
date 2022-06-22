@@ -132,7 +132,7 @@ extension AgoraChatConversationsViewController {
         //Call the login related api to log in again than create e3
     }
     //MARK: - AgoraChatManagerDelegate
-    func messagesDidReceive(_ aMessages: [Any]!) {
+    func messagesDidReceive(_ aMessages: [AgoraChatMessage]) {
         guard let datas = AgoraChatClient.shared().chatManager.getAllConversations() as? [AgoraChatConversation] else { return }
         self.loadGroup(datas)
         self.conversations.removeAll()

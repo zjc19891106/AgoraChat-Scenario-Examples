@@ -175,9 +175,8 @@ extension AgoraChatViewController {
     //MARK: - AgoraChatClientDelegate
     
     //MARK: - AgoraChatManagerDelegate
-    func messagesDidReceive(_ aMessages: [Any]!) {
-        guard let messages = aMessages as? [AgoraChatMessage] else { return }
-        self.loadMessagerCard(messages)
+    func messagesDidReceive(_ aMessages: [AgoraChatMessage]) {
+        self.loadMessagerCard(aMessages)
         DispatchQueue.main.async {
             self.messagesList.reloadData()
             self.messagesList.scrollToRow(at: IndexPath(row: self.messages.count - 1, section: 0), at: .bottom, animated: true)
