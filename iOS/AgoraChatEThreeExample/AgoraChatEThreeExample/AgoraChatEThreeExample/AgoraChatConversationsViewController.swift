@@ -108,7 +108,15 @@ extension AgoraChatConversationsViewController {
         })
         let temp = self.conversations.filter { $0.conversationId == item.conversationId
         }
-        if temp.count <= 0 {
+        var refresh = false
+        if self.conversations.count <= 0 {
+            refresh = true
+        } else {
+            if temp.count <= 0 {
+                refresh = true
+            }
+        }
+        if refresh {
             self.conversations.append(item)
             self.conversationList.reloadData()
         }
