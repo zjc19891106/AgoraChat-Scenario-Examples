@@ -95,13 +95,7 @@ extension AgoraChatRequest {
     func registerToAppSever(userName: String,passWord: String,callBack:@escaping ((Dictionary<String,Any>,Int) -> Void)) {
         do {
             try self.constructRequest(method: .post, uri: "/app/chat/user/register", params: ["userAccount":userName,"userPassword":passWord], headers: ["Content-Type":"application/json"]) { data,response,error in
-                if error == nil {
-                    self.loginToAppSever(userName: userName, passWord: passWord) {
-                        callBack($0,$1)
-                    }
-                } else {
-                    callBack(data?.z.toDictionary() ?? ["error":error?.localizedDescription ?? ""],0)
-                }
+                callBack(data?.z.toDictionary() ?? ["error":error?.localizedDescription ?? ""],0)
             }
         } catch {
             assert(false, "register error:\(error.localizedDescription)")

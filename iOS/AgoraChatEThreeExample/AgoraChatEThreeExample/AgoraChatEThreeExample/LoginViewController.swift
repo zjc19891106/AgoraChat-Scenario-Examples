@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ProgressHUD
 
 
 final class LoginViewController: UIViewController,UITextFieldDelegate {
@@ -27,16 +28,21 @@ final class LoginViewController: UIViewController,UITextFieldDelegate {
     }()
     
     private lazy var login: UIButton = {
-        UIButton(type: .custom).frame(CGRect(x: 20, y: self.passWordField.frame.maxY+40, width: ScreenWidth - 40, height: 45)).backgroundColor(UIColor(0x0066ff)).cornerRadius(10).title("Login", .normal).font(UIFont.systemFont(ofSize: 18, weight: .semibold)).addTargetFor(self, action: #selector(loginAction), for: .touchUpInside)
+           UIButton(type: .custom).frame(CGRect(x: 20, y: self.passWordField.frame.maxY+40, width: ScreenWidth - 40, height: 45)).backgroundColor(UIColor(0x0066ff)).cornerRadius(10).title("Login", .normal).font(UIFont.systemFont(ofSize: 18, weight: .semibold)).addTargetFor(self, action: #selector(loginAction), for: .touchUpInside)
+       }()
+       
+    private lazy var register: UIButton = {
+        UIButton(type: .custom).frame(CGRect(x: 20, y: self.login.frame.maxY+10, width: ScreenWidth - 40, height: 45)).backgroundColor(UIColor(0x0066ff)).cornerRadius(10).title("Register", .normal).font(UIFont.systemFont(ofSize: 18, weight: .semibold)).addTargetFor(self, action: #selector(registerAction), for: .touchUpInside)
     }()
+
     
     private lazy var logRecord: PlaceHolderTextView = {
-        PlaceHolderTextView(frame: CGRect(x: 20, y: self.login.frame.maxY+20, width: ScreenWidth - 40, height: ScreenHeight - self.login.frame.maxY - 40)).layerProperties(UIColor(0xf5f7f9), 1).cornerRadius(5).font(UIFont.systemFont(ofSize: 18, weight: .semibold)).isEditable(false)
+        PlaceHolderTextView(frame: CGRect(x: 20, y: self.register.frame.maxY+20, width: ScreenWidth - 40, height: ScreenHeight - self.register.frame.maxY - 40)).layerProperties(UIColor(0xf5f7f9), 1).cornerRadius(5).font(UIFont.systemFont(ofSize: 18, weight: .semibold)).isEditable(false)
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.addSubViews([self.logo,self.userNameField,self.passWordField,self.login,self.logRecord])
+        self.view.addSubViews([self.logo,self.userNameField,self.passWordField,self.login,self.register,self.logRecord])
         self.logRecord.placeHolder = "Request Log"
         // Do any additional setup after loading the view.
         self.view.backgroundColor = .white
@@ -46,15 +52,31 @@ final class LoginViewController: UIViewController,UITextFieldDelegate {
 
 extension LoginViewController {
     
+    @objc private func registerAction() {
+           self.view.endEditing(true)
+           guard let userName = self.userNameField.text,let passWord = self.passWordField.text,!userName.isEmpty,!passWord.isEmpty else { return }
+           self.userName = userName.lowercased()
+           self.passWord = passWord
+           ProgressHUD.show("Resister user...", interaction: false)
+           AgoraChatRequest.shared.registerToAppSever(userName: userName.lowercased(), passWord: passWord) {
+               ProgressHUD.dismiss()
+               self.loginHandler($0, $1)
+           }
+       }
+
+    
     @objc private func loginAction() {
         self.view.endEditing(true)
         guard let userName = self.userNameField.text,let passWord = self.passWordField.text,!userName.isEmpty,!passWord.isEmpty else { return }
         self.userName = userName.lowercased()
         self.passWord = passWord
-        ProgressHUD.show("Resister user...", interaction: false)
-        AgoraChatRequest.shared.registerToAppSever(userName: userName.lowercased(), passWord: passWord) {
-            ProgressHUD.dismiss()
-            self.loginHandler($0, $1)
+        AgoraChatRequest.shared.loginToAppSever(userName: userName.lowercased(), passWord: passWord) { dic, code in
+            if let token = dic["accessToken"] as? String,let loginName = dic["chatUserName"] as? String,token.count > 0 {
+                self.agoraChatLogin(loginName: loginName, token: token)
+            } else {
+                let errorInfo = dic["errorInfo"] ?? ""
+                self.logRecord.text! += "\n\(Date().z.dateString("yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ")):\(errorInfo)"
+            }
         }
     }
     
@@ -64,13 +86,14 @@ extension LoginViewController {
                 self.agoraChatLogin(loginName: loginName, token: token)
             }
         } else {
-            if let reponsecode = dic["code"] as? String,reponsecode == "RES_USER_ALREADY_EXISTS" {
-                guard let userName = self.userNameField.text,let passWord = self.passWordField.text,!userName.isEmpty,!passWord.isEmpty else { return }
-                AgoraChatRequest.shared.loginToAppSever(userName: userName.lowercased(), passWord: passWord) { dic, code in
-                    if let token = dic["accessToken"] as? String,let loginName = dic["chatUserName"] as? String,token.count > 0 {
-                        self.agoraChatLogin(loginName: loginName, token: token)
-                    }
-                }
+            if let code = dic["code"] as? String,code == "RES_USER_ALREADY_EXISTS" {
+                ProgressHUD.showSucceed("RES_USER_ALREADY_EXISTS" , interaction: true)
+//                guard let userName = self.userNameField.text,let passWord = self.passWordField.text,!userName.isEmpty,!passWord.isEmpty else { return }
+//                AgoraChatRequest.shared.loginToAppSever(userName: userName.lowercased(), passWord: passWord) { dic, code in
+//                    if let token = dic["accessToken"] as? String,let loginName = dic["chatUserName"] as? String,token.count > 0 {
+//                        self.agoraChatLogin(loginName: loginName, token: token)
+//                    }
+//                }
                 return
             }
             let errorInfo = dic["errorInfo"] ?? ""
