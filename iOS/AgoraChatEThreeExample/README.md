@@ -24,7 +24,7 @@ Contains functions related to registration, login and logout and session list en
 The E3EncryptoManager class is used to interact with e3kit and managed the currentuser information.
 
 The interaction process is sample code
-![AgoraChatEThreeProcess](https://user-images.githubusercontent.com/3213611/165893823-c8045a6c-ceec-44c7-baea-b2ad5c1d9ff0.png)
+![AgoraChatEThreeProcess](./AgoraChatEThreeProcess.png)
 
 
 ## How to implement encrypted sessions
