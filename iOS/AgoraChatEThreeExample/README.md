@@ -1,5 +1,3 @@
-# Hello everyone,next,I will show end-to-end encryption
-
 # What’s end-to-end encryption?
 
 ## Quote
